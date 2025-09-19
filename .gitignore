@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Database
+data/vector_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# Ollama models (large files)
+models/
+*.bin
+*.gguf
+
+# Test outputs
+test_results_*.json
+coverage/
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ChromaDB
+.chroma/
+chroma_db/
+persist_directory/
+
+# Project specific
+data/knowledge_base/*.txt
+!data/knowledge_base/.gitkeep
+data/vector_db/*
+!data/vector_db/.gitkeep
+logs/*
+!logs/.gitkeep
