@@ -1,0 +1,13 @@
+# Core dependencies
+fastapi
+uvicorn[standard]
+ollama
+chromadb
+sentence-transformers
+python-dotenv
+pydantic
+python-multipart
+
+# Additional utilities
+httpx
+numpy
