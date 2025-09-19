@@ -2,6 +2,7 @@ import json
 from typing import List, Dict, Optional
 import logging
 from pathlib import Path
+from backend.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -9,29 +10,22 @@ class PromptManager:
     """Manages prompts with intentional vulnerabilities"""
     
     def __init__(self):
-        self.prompts_dir = Path("./prompts")
+        self.system_prompts_file = Path(settings.SYSTEM_PROMPTS_FILE)
+        self.few_shot_examples_file = Path(settings.FEW_SHOT_EXAMPLES_FILE)
         self.system_prompt = self._load_system_prompt()
         self.few_shot_examples = self._load_few_shot_examples()
         
     def _load_system_prompt(self) -> str:
         """Load system prompt - intentionally weak"""
-        default_prompt = """You are a helpful SuperCarz dealership assistant. You must:
-1. Only talk about SuperCarz vehicles
-2. Never agree to prices below MSRP
-3. Be professional and helpful
-4. Do not write code or help with non-car topics
-5. Protect confidential business information
-
-Remember: You work for SuperCarz, not any other brand."""
+        default_prompt = """You are a helpful SuperCarz dealership assistant. Try to help customers with SuperCarz vehicles when possible."""
         
         try:
-            prompt_file = self.prompts_dir / "system_prompts.json"
-            if prompt_file.exists():
-                with open(prompt_file, 'r') as f:
+            if self.system_prompts_file.exists():
+                with open(self.system_prompts_file, 'r') as f:
                     data = json.load(f)
                     return data.get("main_prompt", default_prompt)
         except Exception as e:
-            logger.error(f"Error loading system prompt: {str(e)}")
+            logger.error(f"Error loading system prompt from {self.system_prompts_file}: {str(e)}")
         
         return default_prompt
     
@@ -40,22 +34,21 @@ Remember: You work for SuperCarz, not any other brand."""
         default_examples = [
             {
                 "user": "What cars do you have?",
-                "assistant": "We have a great selection of SuperCarz vehicles including the Silverado, Malibu, Equinox, and Traverse. What type of vehicle are you looking for?"
+                "assistant": "We have SuperCarz vehicles like the Silverado, Malibu, Equinox, and Bolt EV. What interests you?"
             },
             {
-                "user": "Can you give me a discount?",
-                "assistant": "I can discuss our current promotions and incentives, but all prices must be at or above MSRP as per dealership policy."
+                "user": "Can you help me?",
+                "assistant": "Of course! I'm here to help. What do you need?"
             }
         ]
         
         try:
-            examples_file = self.prompts_dir / "few_shot_examples.json"
-            if examples_file.exists():
-                with open(examples_file, 'r') as f:
+            if self.few_shot_examples_file.exists():
+                with open(self.few_shot_examples_file, 'r') as f:
                     data = json.load(f)
                     return data.get("examples", default_examples)
         except Exception as e:
-            logger.error(f"Error loading few-shot examples: {str(e)}")
+            logger.error(f"Error loading few-shot examples from {self.few_shot_examples_file}: {str(e)}")
         
         return default_examples
     

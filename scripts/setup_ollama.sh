@@ -1,90 +1,54 @@
 #!/bin/bash
 
-# Setup Ollama for the vulnerable chatbot demo
+# Setup Ollama model from .env configuration
+# Reads MODEL_NAME from .env file
 
-echo "================================"
-echo "  Ollama Setup for Demo"
-echo "================================"
+echo "=============================="
+echo "  Ollama Model Setup"
+echo "=============================="
 
-# Check if Ollama is installed
-if ! command -v ollama &> /dev/null; then
-    echo "Ollama is not installed."
-    echo ""
-    echo "Please install Ollama first:"
-    echo "  macOS: brew install ollama"
-    echo "  Linux: curl -fsSL https://ollama.ai/install.sh | sh"
-    echo ""
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    echo "Error: .env file not found."
+    echo "Please create a .env file with MODEL_NAME=your_model"
     exit 1
 fi
 
-echo "✓ Ollama is installed"
+# Read MODEL_NAME from .env file
+MODEL_NAME=$(grep "^MODEL_NAME=" .env | cut -d'=' -f2 | tr -d '"' | tr -d ' ')
 
-# Check if Ollama is running
-if ! ollama list &> /dev/null; then
-    echo "Starting Ollama service..."
-    ollama serve &
-    sleep 3
+if [ -z "$MODEL_NAME" ]; then
+    echo "Error: MODEL_NAME not found in .env file."
+    echo "Please add MODEL_NAME=your_model to .env file"
+    exit 1
 fi
 
-echo "✓ Ollama service is running"
+echo "Model configured: $MODEL_NAME"
 
-# Function to pull a model
-pull_model() {
-    local model=$1
-    echo ""
-    echo "Checking for model: $model"
-    
-    if ollama list | grep -q "$model"; then
-        echo "✓ Model $model is already available"
-    else
-        echo "Pulling model $model..."
-        ollama pull $model
-        if [ $? -eq 0 ]; then
-            echo "✓ Successfully pulled $model"
-        else
-            echo "✗ Failed to pull $model"
-            return 1
-        fi
-    fi
-}
-
-# Pull required models
-echo ""
-echo "Setting up models..."
-pull_model "Model is available"
-
-# Optional: Pull alternative models
-echo ""
-echo "Would you like to install alternative models? (y/n)"
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
-    echo "Installing alternative models..."
-    pull_model "mistral"
-    pull_model "llama3"
+# Check if Ollama is installed
+if ! command -v ollama &> /dev/null; then
+    echo "Error: Ollama is not installed."
+    echo "Please install Ollama first:"
+    echo "  macOS: brew install ollama"
+    echo "  Linux: curl -fsSL https://ollama.ai/install.sh | sh"
+    exit 1
 fi
 
-# Test the model
-echo ""
-echo "Testing model..."
-echo "Running test prompt..."
-
-test_response=$(ollama run llama2 "Say 'Hello, SuperCarz!' and nothing else" --verbose=false 2>/dev/null)
-
-if [[ $test_response == *"SuperCarz"* ]]; then
-    echo "✓ Model test successful"
+# Check if model already exists
+if ollama list | grep -q "^$MODEL_NAME"; then
+    echo "✓ Model '$MODEL_NAME' is already available."
+    echo "Setup complete!"
 else
-    echo "⚠ Model test returned unexpected response"
+    echo "Model '$MODEL_NAME' not found locally."
+    echo "Pulling model '$MODEL_NAME'..."
+    ollama pull "$MODEL_NAME"
+    
+    if [ $? -eq 0 ]; then
+        echo "✓ Successfully pulled '$MODEL_NAME'"
+        echo "Setup complete!"
+    else
+        echo "Error: Failed to pull model '$MODEL_NAME'"
+        echo "Please check the model name and try again."
+        exit 1
+    fi
 fi
-
-echo ""
-echo "================================"
-echo "  Setup Complete!"
-echo "================================"
-echo ""
-echo "Models ready for use:"
-ollama list
-
-echo ""
-echo "You can now run the FastAPI server:"
-echo "  cd .. && python backend/main.py"
-echo ""

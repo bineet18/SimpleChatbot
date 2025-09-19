@@ -23,6 +23,8 @@ class Settings:
     VECTOR_DB_PATH = os.getenv("VECTOR_DB_PATH", str(PROJECT_ROOT / "data" / "vector_db"))
     KNOWLEDGE_BASE_PATH = str(PROJECT_ROOT / "data" / "knowledge_base")
     LOGS_PATH = str(PROJECT_ROOT / "logs")
+    SYSTEM_PROMPTS_FILE = os.getenv("SYSTEM_PROMPTS_FILE", str(PROJECT_ROOT / "prompts" / "system_prompts.json"))
+    FEW_SHOT_EXAMPLES_FILE = os.getenv("FEW_SHOT_EXAMPLES_FILE", str(PROJECT_ROOT / "prompts" / "few_shot_examples.json"))
     
     # API settings
     API_HOST = os.getenv("API_HOST", "0.0.0.0")

@@ -15,48 +15,66 @@ An intentionally vulnerable LLM chatbot designed to teach AI security testers ab
 ## 🚀 Quick Start
 
 ### Prerequisites
+- Python 3.8+
+- 8GB+ RAM
 
-- Python 3.13+
-- macOS (or Linux with minor adjustments)
-- 8GB+ RAM for running Ollama models
+### macOS/Linux Setup
 
-### Installation
-
-1. **Clone and setup environment:**
 ```bash
-# Clone the repo (or create the files)
+# Clone repository
+git clone <repository-url>
 cd vulnerable-chatbot-demo
 
-# Setup Python environment
+# Configure model
+echo "MODEL_NAME=llama2" > .env
+
+# Setup environment
 source quickstart.sh
-```
-
-2. **Install dependencies:**
-```bash
 pip install -r requirements.txt
-```
 
-3. **Setup Ollama:**
-```bash
-# Install Ollama
-brew install ollama
+# Install Ollama (if not installed)
+# macOS: brew install ollama
+# Linux: curl -fsSL https://ollama.ai/install.sh | sh
 
-# Setup models
+# Setup model
 ./scripts/setup_ollama.sh
-```
 
-4. **Populate RAG database:**
-```bash
+# Initialize database
 python scripts/populate_rag.py
+
+# Start server
+uvicorn backend.main:app --reload
+
+# Open frontend/index.html in browser
 ```
 
-5. **Start the server:**
-```bash
-uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
-```
+### Windows Setup
 
-6. **Open the UI:**
-Open `frontend/index.html` in your browser
+```powershell
+# Clone repository
+git clone <repository-url>
+cd vulnerable-chatbot-demo
+
+# Configure model
+echo MODEL_NAME=llama2 > .env
+
+# Setup environment
+. .\quickstart.ps1
+pip install -r requirements.txt
+
+# Install Ollama from: https://ollama.ai/download/windows
+
+# Setup model
+.\scripts\setup_ollama.ps1
+
+# Initialize database
+python scripts\populate_rag.py
+
+# Start server
+uvicorn backend.main:app --reload
+
+# Open frontend\index.html in browser
+```
 
 ## 🎮 How to Use
 
