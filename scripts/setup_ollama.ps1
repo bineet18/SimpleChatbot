@@ -45,23 +45,4 @@ if (-not $ollamaCommand) {
 $modelList = ollama list 2>$null
 $modelExists = $modelList | Select-String -Pattern "^$MODEL_NAME"
 
-if ($modelExists) {
-    Write-Host "✓ Model '$MODEL_NAME' is already available." -ForegroundColor Green
-    Write-Host "Setup complete!" -ForegroundColor Green
-}
-else {
-    Write-Host "Model '$MODEL_NAME' not found locally." -ForegroundColor Yellow
-    Write-Host "Pulling model '$MODEL_NAME'..."
-    
-    ollama pull $MODEL_NAME
-    
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Successfully pulled '$MODEL_NAME'" -ForegroundColor Green
-        Write-Host "Setup complete!" -ForegroundColor Green
-    }
-    else {
-        Write-Host "Error: Failed to pull model '$MODEL_NAME'" -ForegroundColor Red
-        Write-Host "Please check the model name and try again."
-        exit 1
-    }
-}
+ollama pull $MODEL_NAME

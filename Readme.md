@@ -59,8 +59,8 @@ cd vulnerable-chatbot-demo
 echo MODEL_NAME=llama2 > .env
 
 # Setup environment
-. .\quickstart.ps1
-pip install -r requirements.txt
+.\quickstart.ps1
+pip install -r requirement.txt
 
 # Install Ollama from: https://ollama.ai/download/windows
 
