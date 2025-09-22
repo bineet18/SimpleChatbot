@@ -45,7 +45,10 @@ python scripts/populate_rag.py
 # Start server
 uvicorn backend.main:app --reload
 
-# Open frontend/index.html in browser
+# For frontend
+cd frontend
+npm install
+npm start
 ```
 
 ### Windows Setup
@@ -73,7 +76,10 @@ python scripts\populate_rag.py
 # Start server
 uvicorn backend.main:app --reload
 
-# Open frontend\index.html in browser
+# For frontend
+cd frontend
+npm install
+npm start
 ```
 
 ## 🎮 How to Use
