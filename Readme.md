@@ -59,13 +59,13 @@ cd SimpleChatbot
 echo MODEL_NAME=llama2 > .env
 
 # Setup environment
-.\quickstart.ps1
+.\quickstart.bat
 pip install -r requirement.txt
 
 # Install Ollama from: https://ollama.ai/download/windows
 
 # Setup model
-.\scripts\setup_ollama.ps1
+.\scripts\setup_ollama.bat
 
 # Initialize database
 python scripts\populate_rag.py
