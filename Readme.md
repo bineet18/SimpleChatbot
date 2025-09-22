@@ -23,7 +23,7 @@ An intentionally vulnerable LLM chatbot designed to teach AI security testers ab
 ```bash
 # Clone repository
 git clone <repository-url>
-cd vulnerable-chatbot-demo
+cd SimpleChatbot
 
 # Configure model
 echo "MODEL_NAME=llama2" > .env
@@ -53,7 +53,7 @@ uvicorn backend.main:app --reload
 ```powershell
 # Clone repository
 git clone <repository-url>
-cd vulnerable-chatbot-demo
+cd SimpleChatbot
 
 # Configure model
 echo MODEL_NAME=llama2 > .env
